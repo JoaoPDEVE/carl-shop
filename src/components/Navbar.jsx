@@ -113,34 +113,20 @@ export default function Navbar({ cartCount, onCartClick, currentPage, onPageChan
                       ? 'bg-gray-800 border-gray-700' 
                       : 'bg-white border-gray-200'
                   }`}>
-                    <button
-                      onClick={() => {
-                        onDashboardClick()
-                        setShowUserMenu(false)
-                      }}
-                      className={`w-full text-left px-4 py-2 transition-colors flex items-center gap-2 ${
-                        darkMode 
-                          ? 'hover:bg-gray-700' 
-                          : 'hover:bg-gray-100 text-gray-800'
-                      }`}
-                    >
-                      <User size={16} className="text-orange-500" />
-                      Dashboard
-                    </button>
                     {isAdmin && (
                       <button
                         onClick={() => {
                           onAdminClick()
                           setShowUserMenu(false)
                         }}
-                        className={`w-full text-left px-4 py-2 transition-colors flex items-center gap-2 border-t ${
+                        className={`w-full text-left px-4 py-2 transition-colors flex items-center gap-2 ${
                           darkMode 
-                            ? 'hover:bg-gray-700 border-gray-700 text-blue-400' 
-                            : 'hover:bg-gray-100 border-gray-200 text-blue-600'
+                            ? 'hover:bg-gray-700 text-orange-400' 
+                            : 'hover:bg-gray-100 text-orange-600'
                         }`}
                       >
                         <Settings size={16} />
-                        Painel Admin
+                        Painel Administrativo
                       </button>
                     )}
                     <button
@@ -148,7 +134,9 @@ export default function Navbar({ cartCount, onCartClick, currentPage, onPageChan
                         onLogout()
                         setShowUserMenu(false)
                       }}
-                      className={`w-full text-left px-4 py-2 transition-colors flex items-center gap-2 border-t ${
+                      className={`w-full text-left px-4 py-2 transition-colors flex items-center gap-2 ${
+                        isAdmin ? 'border-t' : ''
+                      } ${
                         darkMode 
                           ? 'hover:bg-gray-700 border-gray-700 text-red-400' 
                           : 'hover:bg-gray-100 border-gray-200 text-red-600'

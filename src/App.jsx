@@ -10,9 +10,8 @@ import Checkout from './components/Checkout'
 import FAQ from './components/FAQ'
 import Auth from './components/Auth'
 import ClientAuth from './components/ClientAuth'
-import Dashboard from './components/Dashboard'
+import AdminPanel from './components/AdminPanel'
 import ClientDashboard from './components/ClientDashboard'
-import Admin from './components/Admin'
 import GameCatalog from './components/GameCatalog'
 
 function App() {
@@ -223,22 +222,16 @@ function App() {
           {currentPage === 'faq' && (
             <FAQ />
           )}
-          {currentPage === 'dashboard' && user && (
-            <Dashboard 
-              user={user}
-              onLogout={handleLogout}
-              cart={cart}
-            />
-          )}
-          {currentPage === 'admin' && isAdmin && (
-            <Admin 
+          {(currentPage === 'admin' || currentPage === 'dashboard') && isAdmin && (
+            <AdminPanel
               user={user}
               onLogout={() => {
                 setIsAdmin(false)
                 handleLogout()
               }}
             />
-          )}        </>
+          )}
+        </>
       )}
       
       <Footer darkMode={darkMode} />
