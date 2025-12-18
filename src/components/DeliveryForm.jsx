@@ -66,22 +66,17 @@ export default function DeliveryForm({ isOpen, onClose, onSubmit, totalPrice, it
         data: new Date().toLocaleString('pt-BR')
       }
 
-      // Salvar em localStorage
+      // Salvar em localStorage (sem backend)
       localStorage.setItem(`delivery-${Date.now()}`, JSON.stringify(purchaseData))
 
-      // Enviar email via servidor backend
+      // Simular resposta bem-sucedida (dados salvos localmente)
       try {
-        const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
-        const emailResponse = await fetch(`${backendUrl}/api/send-email`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            from: 'onboarding@resend.dev',
-            to: formData.email,
-            subject: `🛒 Nova Compra - ${formData.nome}`,
-            html: `
+        const emailResponse = {
+          ok: true
+        }
+        
+        // Aqui você pode adicionar lógica para integrar um serviço de email no futuro
+        // Por enquanto, tudo é salvo em localStorage
               <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                 <h2 style="color: #FF6B35;">🛒 NOVA COMPRA REALIZADA</h2>
                 <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">

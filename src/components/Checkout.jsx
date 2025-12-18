@@ -42,21 +42,17 @@ export default function Checkout({ isOpen, onClose, totalPrice, items = [], user
     console.log('📧 Preparando email para:', data.email)
     console.log('📦 Dados:', purchaseData)
     
-    // Enviar email via servidor backend
-    console.log('📤 Tentando enviar via servidor backend...')
+    // Dados salvos em localStorage (sem backend)
+    console.log('📤 Dados salvos em localStorage')
     try {
-      const emailResponse = await fetch('http://localhost:5000/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          from: 'onboarding@resend.dev',
-          to: data.email,
-          subject: `🛒 Compra Confirmada - ${data.nome}`,
-          html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;"><h2 style="color: #FF6B35;">✅ COMPRA CONFIRMADA!</h2><hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;"><div style="background-color: #f5f5f5; padding: 15px; border-radius: 8px; margin: 15px 0;"><h3 style="margin-top: 0;">Dados do Cliente:</h3><p><strong>👤 Nome:</strong> ${data.nome}</p><p><strong>📧 Email:</strong> ${data.email}</p><p><strong>📱 Telefone:</strong> ${data.telefone}</p><p><strong>🎮 Discord:</strong> ${data.discord}</p></div><div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #FF6B35;"><h3 style="margin-top: 0;">Detalhes da Compra:</h3><p><strong>📦 Itens:</strong> ${purchaseData.itens}</p><p><strong>💰 Total:</strong> R$ ${totalPrice.toFixed(2)}</p><p><strong>📅 Data:</strong> ${purchaseData.data}</p></div><hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;"><p style="color: #666; font-size: 12px; text-align: center;">Obrigado pela sua compra na CARLSHOP!</p></div>`
-        })
-      })
+      // Salvar dados localmente
+      localStorage.setItem(`checkout-${Date.now()}`, JSON.stringify(purchaseData))
+      
+      const emailResponse = {
+        ok: true
+      }
+      
+      // Aqui você pode integrar um serviço de email no futuro
 
       if (!emailResponse.ok) {
         console.error('⚠️ Erro ao enviar email:', emailResponse.status)

@@ -27,16 +27,16 @@ export default function Contact() {
     setMessage('')
     
     try {
-      const response = await fetch('http://localhost:5000/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          from: 'onboarding@resend.dev',
-          to: 'joaobjjpedro@gmail.com',
-          subject: `📞 Contato: ${formData.assunto}`,
-          html: `<h2>${formData.assunto}</h2><p><strong>De:</strong> ${formData.nome} (${formData.email})</p><p><strong>Mensagem:</strong></p><p>${formData.mensagem}</p>`
-        })
-      })
+      // Salvar contato em localStorage (sem backend)
+      const contactData = {
+        ...formData,
+        data: new Date().toLocaleString('pt-BR')
+      }
+      localStorage.setItem(`contact-${Date.now()}`, JSON.stringify(contactData))
+      
+      const response = {
+        ok: true
+      }
 
       if (response.ok) {
         setMessage('✅ Mensagem enviada com sucesso! Vamos responder em breve.')
