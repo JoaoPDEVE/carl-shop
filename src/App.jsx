@@ -8,10 +8,6 @@ import Catalog from './components/Catalog'
 import Contact from './components/Contact'
 import Checkout from './components/Checkout'
 import FAQ from './components/FAQ'
-import Auth from './components/Auth'
-import ClientAuth from './components/ClientAuth'
-import AdminPanel from './components/AdminPanel'
-import ClientDashboard from './components/ClientDashboard'
 import GameCatalog from './components/GameCatalog'
 
 function App() {
@@ -26,12 +22,6 @@ function App() {
     const saved = localStorage.getItem('cartshop-darkmode')
     return saved ? JSON.parse(saved) : false
   })
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('cartshop-user')
-    return saved ? JSON.parse(saved) : null
-  })
-  const [showAuth, setShowAuth] = useState(false)
-  const [isAdmin, setIsAdmin] = useState(false)
   const [adminProducts, setAdminProducts] = useState(() => {
     const stored = localStorage.getItem('admin-products')
     return stored ? JSON.parse(stored) : []
@@ -40,33 +30,8 @@ function App() {
     const stored = localStorage.getItem('admin-games')
     return stored ? JSON.parse(stored) : []
   })
-  const [showClientAuth, setShowClientAuth] = useState(false)
-  const [clientUser, setClientUser] = useState(() => {
-    const saved = localStorage.getItem('cartshop-client-user')
-    return saved ? JSON.parse(saved) : null
-  })
 
-  // Recarregar produtos quando retornar da página admin
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const stored = localStorage.getItem('admin-products')
-      setAdminProducts(stored ? JSON.parse(stored) : [])
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-    
-    // Também verificar periodicamente (para atualizações na mesma aba)
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem('admin-products')
-      const parsed = stored ? JSON.parse(stored) : []
-      setAdminProducts(parsed)
-    }, 500)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-      clearInterval(interval)
-    }
-  }, [])
+  // Recarregar produtos do localStorage
 
   const products = adminProducts
 
@@ -106,7 +71,6 @@ function App() {
     }
   }
 
-  const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
   const toggleDarkMode = () => {
     setDarkMode(prev => {
       const newValue = !prev
@@ -115,60 +79,7 @@ function App() {
     })
   }
 
-  const handleLogout = () => {
-    setUser(null)
-    localStorage.removeItem('cartshop-user')
-    setIsAdmin(false)
-    setCurrentPage('home')
-  }
-
-  const handleLogin = (userData) => {
-    setUser(userData)
-    setShowAuth(false)
-    // Admin access verifying isAdmin property
-    if (userData.isAdmin) {
-      setIsAdmin(true)
-      setCurrentPage('admin')
-    }
-  }
-
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0)
-
-  return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-950 text-white' : 'bg-white text-gray-900'}`}>
-      <Navbar 
-        cartCount={totalItems}
-        onCartClick={() => setShowCart(!showCart)}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        darkMode={darkMode}
-        onToggleDarkMode={toggleDarkMode}
-        user={user}
-        onAuthClick={() => setShowAuth(true)}
-        onClientAuthClick={() => setShowClientAuth(true)}
-        onDashboardClick={() => setCurrentPage('dashboard')}
-        onAdminClick={() => setCurrentPage('admin')}
-        isAdmin={isAdmin}
-        onLogout={handleLogout}
-        clientUser={clientUser}
-        onClientLogout={() => {
-          setClientUser(null)
-          localStorage.removeItem('cartshop-client-user')
-        }}
-      />
-      
-      <Auth 
-        isOpen={showAuth} 
-        onClose={() => setShowAuth(false)} 
-        onLogin={handleLogin}
-      />
-
-      <ClientAuth
-        isOpen={showClientAuth}
-        onClose={() => setShowClientAuth(false)}
-        user={clientUser}
-        setUser={setClientUser}
-      />
+  const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
       
       <Catalog isOpen={showCatalog} onClose={() => setShowCatalog(false)} onAddToCart={addToCart} user={user} darkMode={darkMode} />
       <Checkout isOpen={showCheckout} onClose={() => setShowCheckout(false)} totalPrice={totalPrice} items={cart} user={user} setCart={setCart} />
@@ -221,15 +132,6 @@ function App() {
           )}
           {currentPage === 'faq' && (
             <FAQ />
-          )}
-          {(currentPage === 'admin' || currentPage === 'dashboard') && isAdmin && (
-            <AdminPanel
-              user={user}
-              onLogout={() => {
-                setIsAdmin(false)
-                handleLogout()
-              }}
-            />
           )}
         </>
       )}

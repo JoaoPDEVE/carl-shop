@@ -1,9 +1,8 @@
-import { ShoppingCart, Menu, X, Moon, Sun, User, LogOut, Settings } from 'lucide-react'
+import { ShoppingCart, Menu, X, Moon, Sun } from 'lucide-react'
 import { useState } from 'react'
 
-export default function Navbar({ cartCount, onCartClick, currentPage, onPageChange, darkMode, onToggleDarkMode, user, onAuthClick, onClientAuthClick, onDashboardClick, onAdminClick, isAdmin, onLogout, clientUser, onClientLogout }) {
+export default function Navbar({ cartCount, onCartClick, currentPage, onPageChange, darkMode, onToggleDarkMode }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [showUserMenu, setShowUserMenu] = useState(false)
 
   const handleNavClick = (page) => {
     onPageChange(page)
@@ -88,120 +87,6 @@ export default function Navbar({ cartCount, onCartClick, currentPage, onPageChan
             >
               {darkMode ? <Sun size={20} className="text-yellow-500" /> : <Moon size={20} className="text-gray-700" />}
             </button>
-
-            {/* Auth / User Menu */}
-            {user && user.isAdmin ? (
-              // Admin user
-              <div className="relative">
-                <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
-                    darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
-                  }`}
-                >
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-6 h-6 rounded-full border border-orange-500"
-                  />
-                  <span className="hidden sm:inline text-sm font-semibold">{user.name}</span>
-                </button>
-
-                {showUserMenu && (
-                  <div className={`absolute right-0 top-full mt-2 w-48 border rounded-lg shadow-lg z-50 transition-colors ${
-                    darkMode 
-                      ? 'bg-gray-800 border-gray-700' 
-                      : 'bg-white border-gray-200'
-                  }`}>
-                    {isAdmin && (
-                      <button
-                        onClick={() => {
-                          onAdminClick()
-                          setShowUserMenu(false)
-                        }}
-                        className={`w-full text-left px-4 py-2 transition-colors flex items-center gap-2 ${
-                          darkMode 
-                            ? 'hover:bg-gray-700 text-orange-400' 
-                            : 'hover:bg-gray-100 text-orange-600'
-                        }`}
-                      >
-                        <Settings size={16} />
-                        Painel Administrativo
-                      </button>
-                    )}
-                    <button
-                      onClick={() => {
-                        onLogout()
-                        setShowUserMenu(false)
-                      }}
-                      className={`w-full text-left px-4 py-2 transition-colors flex items-center gap-2 ${
-                        isAdmin ? 'border-t' : ''
-                      } ${
-                        darkMode 
-                          ? 'hover:bg-gray-700 border-gray-700 text-red-400' 
-                          : 'hover:bg-gray-100 border-gray-200 text-red-600'
-                      }`}
-                    >
-                      <LogOut size={16} />
-                      Sair
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : clientUser ? (
-              // Client user
-              <div className="relative">
-                <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
-                    darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
-                  }`}
-                >
-                  <div className="w-6 h-6 rounded-full border-2 border-green-500 flex items-center justify-center">
-                    <User size={14} className="text-green-500" />
-                  </div>
-                  <span className="hidden sm:inline text-sm font-semibold truncate max-w-[100px]">{clientUser.email?.split('@')[0] || 'Cliente'}</span>
-                </button>
-
-                {showUserMenu && (
-                  <div className={`absolute right-0 top-full mt-2 w-48 border rounded-lg shadow-lg z-50 transition-colors ${
-                    darkMode 
-                      ? 'bg-gray-800 border-gray-700' 
-                      : 'bg-white border-gray-200'
-                  }`}>
-                    <button
-                      onClick={() => {
-                        onClientLogout()
-                        setShowUserMenu(false)
-                      }}
-                      className={`w-full text-left px-4 py-2 transition-colors flex items-center gap-2 border-t ${
-                        darkMode 
-                          ? 'hover:bg-gray-700 border-gray-700 text-red-400' 
-                          : 'hover:bg-gray-100 border-gray-200 text-red-600'
-                      }`}
-                    >
-                      <LogOut size={16} />
-                      Sair
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                <button
-                  onClick={onAuthClick}
-                  className="hidden sm:block px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors text-sm"
-                >
-                  Admin
-                </button>
-                <button
-                  onClick={onClientAuthClick}
-                  className="px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-lg font-semibold transition-colors text-sm"
-                >
-                  Login
-                </button>
-              </div>
-            )}
 
             {/* Cart Button */}
             <button
