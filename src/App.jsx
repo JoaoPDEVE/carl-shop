@@ -32,6 +32,22 @@ function App() {
   })
 
   // Recarregar produtos do localStorage
+  useEffect(() => {
+    // Inicializar com jogo padrão se não existir
+    const stored = localStorage.getItem('admin-games')
+    if (!stored || JSON.parse(stored).length === 0) {
+      const defaultGames = [
+        {
+          id: '1',
+          name: 'Grand Piece Online',
+          description: 'Jogo Roblox baseado em One Piece com aventuras épicas',
+          createdAt: new Date().toLocaleString('pt-BR')
+        }
+      ]
+      localStorage.setItem('admin-games', JSON.stringify(defaultGames))
+      setAdminGames(defaultGames)
+    }
+  }, [])
 
   const products = adminProducts
 
@@ -80,9 +96,21 @@ function App() {
   }
 
   const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0)
+
+  return (
+    <div className={`min-h-screen ${darkMode ? 'bg-gray-950 text-white' : 'bg-white text-gray-900'}`}>
+      <Navbar 
+        cartCount={totalItems}
+        onCartClick={() => setShowCart(!showCart)}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        darkMode={darkMode}
+        onToggleDarkMode={toggleDarkMode}
+      />
       
-      <Catalog isOpen={showCatalog} onClose={() => setShowCatalog(false)} onAddToCart={addToCart} user={user} darkMode={darkMode} />
-      <Checkout isOpen={showCheckout} onClose={() => setShowCheckout(false)} totalPrice={totalPrice} items={cart} user={user} setCart={setCart} />
+      <Catalog isOpen={showCatalog} onClose={() => setShowCatalog(false)} onAddToCart={addToCart} darkMode={darkMode} />
+      <Checkout isOpen={showCheckout} onClose={() => setShowCheckout(false)} totalPrice={totalPrice} items={cart} setCart={setCart} />
       
       {showCart ? (
         <Cart 

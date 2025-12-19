@@ -77,36 +77,9 @@ export default function DeliveryForm({ isOpen, onClose, onSubmit, totalPrice, it
         
         // Aqui você pode adicionar lógica para integrar um serviço de email no futuro
         // Por enquanto, tudo é salvo em localStorage
-              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                <h2 style="color: #FF6B35;">🛒 NOVA COMPRA REALIZADA</h2>
-                <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
-                
-                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                  <h3 style="margin-top: 0;">Dados do Cliente:</h3>
-                  <p><strong>👤 Nome:</strong> ${formData.nome}</p>
-                  <p><strong>📧 Email:</strong> ${formData.email}</p>
-                  <p><strong>📱 Telefone:</strong> ${formData.telefone}</p>
-                  <p><strong>🎮 Discord:</strong> ${formData.discord}</p>
-                </div>
-
-                <div style="background-color: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #FF6B35;">
-                  <h3 style="margin-top: 0;">Detalhes do Pedido:</h3>
-                  <p><strong>📦 Itens:</strong> ${purchaseData.itens}</p>
-                  <p><strong>💰 Total:</strong> <span style="color: #FF6B35; font-size: 1.2em; font-weight: bold;">R$ ${totalPrice.toFixed(2)}</span></p>
-                  <p><strong>📅 Data:</strong> ${purchaseData.data}</p>
-                </div>
-
-                <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
-                <p style="color: #666; font-size: 12px; text-align: center;">
-                  Este é um email automático da CARLSHOP - Roblox Shop
-                </p>
-              </div>
-            `
-          })
-        })
 
         if (!emailResponse.ok) {
-          console.log('Email status:', emailResponse.status)
+          console.log('Dados salvos localmente')
         } else {
           console.log('Email enviado com sucesso!')
         }
